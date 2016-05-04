@@ -14,6 +14,7 @@ public class MainWindowWindow extends JFrame
 		setBounds(100, 100, 1720, 880);
 		setResizable(false);
 		getContentPane().setLayout(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	

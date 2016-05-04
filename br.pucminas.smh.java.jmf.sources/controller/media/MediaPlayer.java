@@ -1,73 +1,42 @@
 package controller.media;
 
-import java.awt.Component;
-import java.io.IOException;
 
-import javax.media.ControllerAdapter;
-import javax.media.EndOfMediaEvent;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.NoPlayerException;
-import javax.media.Player;
-import javax.media.PrefetchCompleteEvent;
-import javax.media.RealizeCompleteEvent;
-import javax.media.Time;
+import java.awt.BorderLayout;
+
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import model.media.Media;
 
 @SuppressWarnings("serial")
 public class MediaPlayer extends JLabel
 {
-	private Player player;
-	private Component componenteVisual;
-	private MediaLocator localizadorDeMedia;
-
-	public MediaPlayer(Media media)
+	private EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	
+	private String mediaPath;
+	
+	public void realiseMediaPlayer(Media media)
 	{
-		localizadorDeMedia = new MediaLocator("file:///" + media.getPath());
 		
+		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+		mediaPath = media.getPath();
 		
-		try{
-			player = Manager.createPlayer(localizadorDeMedia);
-			player.addControllerListener(new PlayerEventHandler());
-			player.realize();
-		}
-		catch(NoPlayerException | IOException ioe)
-		{
-			ioe.printStackTrace();
-		}		
+		this.setBounds(0, 0, 600, 400);
+		//this.setLayout(new BorderLayout());
+		this.add(mediaPlayerComponent);
 	}
 	
-	private class PlayerEventHandler extends ControllerAdapter
+	public void play()
 	{
-		public void realizeComplete(RealizeCompleteEvent realizeDoneEvent)
-		{
-			player.prefetch();
-		}
-
-		public void prefetchComplete(PrefetchCompleteEvent prefetchDoneEvent)
-		{
-			componenteVisual = player.getVisualComponent();
-			if (componenteVisual != null)
-				add(componenteVisual);
-				
-			validate();
-			
-		}
-
-		public void endOfMedia(EndOfMediaEvent mediaEndEvent)
-		{
-			player.setMediaTime(new Time(0));
-			player.stop();
-		}
-
+		mediaPlayerComponent.getMediaPlayer().playMedia(mediaPath);
 	}
 	
-	public void startMedia()
+	public void stop()
 	{
-		player.start();
+		mediaPlayerComponent.getMediaPlayer().stop();
 	}
+	
 }
 
 

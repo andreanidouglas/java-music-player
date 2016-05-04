@@ -2,8 +2,6 @@ package view;
 
 import java.awt.Component;
 
-import javax.swing.JLabel;
-
 public class PlayerDefaultWindow extends DefaultWindow{
 
 
